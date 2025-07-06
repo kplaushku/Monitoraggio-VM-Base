@@ -6,6 +6,17 @@ Creare un workflow YAML per monitorare lo stato delle VM e generare report.
 Ogni mattina alle 8:00 devi controllare lo stato di tutte le VM critiche e inviare un report.
 
 
+DATI Known:
+	•	name (VM) → es. web-server-01, db-server-01
+	•	host → IP o FQDN, es. 192.168.1.10, db01.internal.lan
+	•	services → elenco servizi/processi, es. apache2, mysql, redis
+	•	script_path → percorso assoluto script, es. /scripts/monitoring/vm_check.py
+	•	bot_name → identificativo bot RPA, es. ServiceMonitoring_Bot
+	•	repository → repo/progetto bot, es. RPA_ServiceCheck_Repo
+	•	api_endpoint → URL API notifiche, es. https://api.company.com/notify
+	•	recipients → email destinatari, es. sysadmin@company.com
+	•	Campi numerici output (total_vms, online_vms, ecc.) → saranno calcolati dallo script, non riempirli a mano
+
 ### STRUTTURA DA COMPLETARE
 
 
