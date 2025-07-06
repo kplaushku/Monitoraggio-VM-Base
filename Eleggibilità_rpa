@@ -1,0 +1,53 @@
+Allora, da un lato c’è il patching di 200 VM al mese: sempre lo stesso giro snapshot-update-reboot, 100 ore di lavoro manuale e un bel po’ di finestra CVE.
+
+
+Dall’altro la creazione di account di servizio in AD: 40 richieste l’anno, policy che cambiano e il rischio di assegnare permessi sbagliati.
+
+
+Domandiamoci: dove il volume è più alto, il rischio maggiore e le eccezioni minori?
+
+
+
+
+╔════════════════════════════════════════════════════════╗
+
+║Processo A: Patching mensile VM Linux        ║
+
+╚════════════════════════════════════════════════════════╝
+
+• 200 VM da aggiornare ogni mese  
+
+• Flow fisso: snapshot → update → reboot → health-check  
+
+• Dati strutturati; pochissime eccezioni  
+• Punteggio eleggibilità **17/20**  
+
+• Benefici RPA: -100 h/uomo-mese, CVE chiuse prima, MTTR↓  
+
+
+
+╔════════════════════════════════════════════════════════╗
+
+
+
+║ Processo B: Creazione account di servizio AD ║
+
+╚════════════════════════════════════════════════════════╝
+
+
+• ~40 account/anno tramite ticket ITSM 
+
+• Passi: richiesta → account + gruppi → pwd policy → mail credenziali  
+
+• Varianti di policy & approvazioni ⇒ più eccezioni  
+
+• Punteggio eleggibilità **12/20**  
+
+• Benefici RPA: meno errori di permessi, audit migliore, ma ROI minore  
+
+
+
+
+
+
+
