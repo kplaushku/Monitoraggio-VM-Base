@@ -1,0 +1,80 @@
+### OBIETTIVO
+Creare un workflow YAML per monitorare lo stato delle VM e generare report.
+
+
+### SCENARIO
+Ogni mattina alle 8:00 devi controllare lo stato di tutte le VM critiche e inviare un report.
+
+
+### STRUTTURA DA COMPLETARE
+
+
+
+
+
+```yaml
+# Workflow: Monitoraggio VM Mattutino
+workflow_name: "vm_monitoring_daily"
+trigger:
+ type: "___________"          # COMPLETA: che tipo di trigger?
+ schedule: "___________"      # COMPLETA: quando eseguire?
+
+# CONFIGURAZIONE: VM da monitorare
+vm_config:
+ critical_vms:
+   - name: "___________"      # COMPLETA: nome VM
+     host: "___________"      # COMPLETA: host/IP
+     services:
+       - "___________"        # COMPLETA: servizi da controllare
+       - "___________"
+   - name: "___________"
+     host: "___________"
+     services:
+       - "___________"
+       - "___________"
+
+# PROCESSO: Check VM status (chiamate a script/RPA di monitoraggio)
+process_steps:
+ - step_name: "check_vm_status"
+   action: "call_script"     # CHIAMA script ping/connectivity
+   script_path: "___________" # COMPLETA: path script monitoraggio
+   method: "___________"     # COMPLETA: metodo check_connectivity
+   for_each: "___________"    # COMPLETA: su cosa iteri?
+   checks:
+     - check_type: "___________"  # COMPLETA: che controlli fai?
+       expected: "___________"    # COMPLETA: risultato atteso
+     - check_type: "___________"
+       expected: "___________"
+  
+ - step_name: "check_services"
+   action: "call_rpa_bot"    # CHIAMA bot RPA per check servizi
+   bot_name: "___________"   # COMPLETA: nome bot servizi
+   repository: "___________" # COMPLETA: repo con logica servizi
+   for_each: "___________"    # COMPLETA
+  
+ - step_name: "generate_report"
+   action: "call_script"     # CHIAMA script generazione report
+   script_path: "___________" # COMPLETA: path script report
+   template: "___________"   # COMPLETA: template report
+   format: "___________"      # COMPLETA: formato report
+  
+ - step_name: "send_report"
+   action: "call_api"        # CHIAMA API email/notification
+   api_endpoint: "___________" # COMPLETA: endpoint notifica
+   method: "___________"     # COMPLETA: POST per invio
+   recipients:
+     - "___________"          # COMPLETA: destinatari
+   conditions:
+     - if: "___________"      # COMPLETA: quando inviare?
+       then: "___________"    # COMPLETA: cosa fare?
+
+# OUTPUT: Risultati monitoraggio
+output_data:
+ report_generated: true
+ vm_status_summary:
+   total_vms: "___________"   # COMPLETA
+   online_vms: "___________"  # COMPLETA
+   offline_vms: "___________" # COMPLETA
+   issues_found: "___________" # COMPLETA
+```
+
