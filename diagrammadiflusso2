@@ -1,0 +1,64 @@
+Diagramma di Flusso 2: Scenario di partenza
+
+
+150 note spese/mese - 18 min a pratica – 4 % errori
+
+
+Dipendente invia NotaSpese.xlsx + PDF scontrini a finance@
+
+
+Addetto finance scarica e salva su file-server, controlla policy, trascrive in SAP, invia conferma, archivia
+
+
+
+
+Scenario (“Nota Spese 2.0” )
+E-mail in arrivo: il dipendente invia a finance@
+
+
+NotaSpese.xlsx (template standard)
+
+
+PDF degli scontrini
+
+
+Salvataggio iniziale → \\ShareDrive\NoteSpese\<YYYY-MM>\InArrivo
+
+
+Validazione (contro Expense Policy PDF su SharePoint)
+
+
+importo, valuta, categoria, massimali
+
+
+celle obbligatorie compilate
+
+
+Esito KO
+
+
+sposta in …\Errori
+
+
+registra esito su Rimborsi.accdb
+
+
+mail di rigetto al dipendente
+
+
+Esito OK
+
+
+scrive le righe in SAP FI-TravelExpense (TE_EXP_TRAVEL) via BAPI
+
+
+logga n. pratica SAP in Rimborsi.accdb
+
+
+mail di conferma al dipendente
+
+
+archivia Excel + PDF in …\Chiuse
+
+
+e
