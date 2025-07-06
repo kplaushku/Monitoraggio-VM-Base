@@ -1,0 +1,46 @@
+Analisi Bot RPA (Least Privilege).txt
+---
+trigger:
+  branches:
+    include:
+      - main
+variables:
+  BOT_NAME: rpa-bot-admin
+  STORAGE_CONTAINER: hr-reports
+  FILE_NAME: accessi_mensili.xlsx
+  EMAIL_TO: sicurezza.it@company.com
+stages:
+  - stage: RunRPAJob
+    displayName: Esecuzione Bot RPA HR
+    jobs:
+      - job: execute
+        displayName: Run BOT with assigned identity
+        pool:
+          vmImage: windows-latest
+        steps:
+          - task: AzureCLI@2
+            name: ReadBlob
+            inputs:
+              azureSubscription: BotServiceConnection
+              scriptType: ps
+              scriptLocation: inlineScript
+              inlineScript: |
+                az storage blob download \
+                  --container-name $(STORAGE_CONTAINER) \
+                  --name $(FILE_NAME) \
+                  --file $(Build.ArtifactStagingDirectory)\$(FILE_NAME) \
+                  --auth-mode login
+            env:
+              AZURE_CLIENT_ID: $(BOT_NAME)
+          - task: PowerShell@2
+            displayName: Run Bot Locally
+            inputs:
+              targetType: inline
+              script: |
+                Write-Output "Simulo elaborazione bot su file Excel"
+          - task: SendEmail@1
+            displayName: Invia Email
+            inputs:
+              to: $(EMAIL_TO)
+              subject: Report Accessi Mensili
+              body: In allegato il file $(FILE_NAME).
