@@ -1,0 +1,11 @@
+Scenario
+Il dipendente invia una mail con l’Excel “NotaSpese.xlsx” e i PDF degli scontrini → l’addetto finance salva i file in ShareDrive\NoteSpese\Mese → controlla gli importi e le categorie leggendo la policy → trascrive ogni riga nel modulo SAP ERP > Expense → invia la mail di conferma al dipendente → archivia gli allegati in “Chiuse”.
+Tempo medio: 18 min/nota • Errori: 4 % Tech-stack attuale
+Outlook / Exchange – mailbox finance@
+File server SMB on-prem – cartelle InArrivo / Chiuse
+SAP ERP FI-TravelExpense – tabella TE_EXP_TRAVEL
+Microsoft Access – DB “Rimborsi.accdb” (registro esiti)
+Excel – template “NotaSpese.xlsx”
+PDF policy su Intranet SharePoint Obiettivo esercizio
+Disegnare il diagramma di flusso del bot RPA che automatizza il processo.
+Valutare l’eleggibilità (RPA-score) e dichiarare se il task è deterministico 
