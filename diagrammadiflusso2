@@ -1,64 +1,13 @@
-Diagramma di Flusso 2: Scenario di partenza
-
-
-150 note spese/mese - 18 min a pratica – 4 % errori
-
-
-Dipendente invia NotaSpese.xlsx + PDF scontrini a finance@
-
-
-Addetto finance scarica e salva su file-server, controlla policy, trascrive in SAP, invia conferma, archivia
-
-
-
-
-Scenario (“Nota Spese 2.0” )
-E-mail in arrivo: il dipendente invia a finance@
-
-
-NotaSpese.xlsx (template standard)
-
-
-PDF degli scontrini
-
-
-Salvataggio iniziale → \\ShareDrive\NoteSpese\<YYYY-MM>\InArrivo
-
-
-Validazione (contro Expense Policy PDF su SharePoint)
-
-
-importo, valuta, categoria, massimali
-
-
-celle obbligatorie compilate
-
-
-Esito KO
-
-
-sposta in …\Errori
-
-
-registra esito su Rimborsi.accdb
-
-
-mail di rigetto al dipendente
-
-
-Esito OK
-
-
-scrive le righe in SAP FI-TravelExpense (TE_EXP_TRAVEL) via BAPI
-
-
-logga n. pratica SAP in Rimborsi.accdb
-
-
-mail di conferma al dipendente
-
-
-archivia Excel + PDF in …\Chiuse
-
-
-e
+Richiesta Ferie
+	•	Input: il dipendente invia a hr@
+	•	RichiestaFerie.xlsx (template standard)
+	•	eventuale PDF certificato medico
+	•	HR assistant (oggi)
+	1.	salva gli allegati in \\ShareDrive\RichiesteFerie\<YYYY-MM>\InArrivo
+	2.	controlla il saldo ferie su SAP HCM
+	3.	se il saldo è sufficiente inserisce l’assenza; altrimenti rifiuta
+	4.	aggiorna il registro Access Ferie.accdb
+	5.	invia mail di esito al dipendente
+	6.	archivia gli allegati in …\Chiuse
+	•	Tempo medio: 12 min / richiesta • Errori: 3 %
+	•	Tech-stack: Outlook, file-server SMB, SAP HCM (tab. PA2001), Access Ferie.accdb, Excel template, policy PDF su SharePoint.
