@@ -1,91 +1,85 @@
 ### OBIETTIVO
-Creare un workflow YAML per monitorare lo stato delle VM e generare report.
-
+Creare un workflow YAML per monitorare lo stato delle VM critiche e generare un report giornaliero.
 
 ### SCENARIO
-Ogni mattina alle 8:00 devi controllare lo stato di tutte le VM critiche e inviare un report.
+Ogni mattina alle 8:00, il sistema deve eseguire un controllo su tutte le VM critiche indicate e verificarne:
+- la raggiungibilità
+- i servizi attivi
 
+Il controllo viene effettuato con uno script Python (già fornito), seguito da un bot RPA che verifica i servizi.  
+Infine, viene generato un report in formato PDF basato su un template HTML, che deve essere inviato via API agli amministratori all’indirizzo `sysadmin@company.com`.  
+Il report deve essere inviato **solo se viene generato o se ci sono problemi rilevati.
 
-DATI Known:
-	•	name (VM) → es. web-server-01, db-server-01
-	•	host → IP o FQDN, es. 192.168.1.10, db01.internal.lan
-	•	services → elenco servizi/processi, es. apache2, mysql, redis
-	•	script_path → percorso assoluto script, es. /scripts/monitoring/vm_check.py
-	•	bot_name → identificativo bot RPA, es. ServiceMonitoring_Bot
-	•	repository → repo/progetto bot, es. RPA_ServiceCheck_Repo
-	•	api_endpoint → URL API notifiche, es. https://api.company.com/notify
-	•	recipients → email destinatari, es. sysadmin@company.com
-	•	Campi numerici output (total_vms, online_vms, ecc.) → saranno calcolati dallo script, non riempirli a mano
+Dati disponibili:
+- VM:
+  - `web-server-01`, IP `192.168.1.10`, servizi: `apache2`, `redis`
+  - `db-server-01`, host `db01.internal.lan`, servizi: `mysql`, `backupd`
+- Script di controllo: `/scripts/monitoring/vm_check.py`
+- Bot: `ServiceMonitoring_Bot`, repo: `RPA_ServiceCheck_Repo`
+- API endpoint: `https://api.company.com/notify`
+- Destinatario: `sysadmin@company.com`
 
-### STRUTTURA DA COMPLETARE
+---
 
-
-
-
-
-```yaml
-# Workflow: Monitoraggio VM Mattutino
 workflow_name: "vm_monitoring_daily"
+
 trigger:
- type: "___________"          # COMPLETA: che tipo di trigger?
- schedule: "___________"      # COMPLETA: quando eseguire?
+  type: "scheduled"
+  schedule: ""                # da completare
 
-# CONFIGURAZIONE: VM da monitorare
 vm_config:
- critical_vms:
-   - name: "___________"      # COMPLETA: nome VM
-     host: "___________"      # COMPLETA: host/IP
-     services:
-       - "___________"        # COMPLETA: servizi da controllare
-       - "___________"
-   - name: "___________"
-     host: "___________"
-     services:
-       - "___________"
-       - "___________"
+  critical_vms:
+    - name: ""                # da completare
+      host: ""                # da completare
+      services:
+        - ""                  # da completare
+        - ""
+    - name: ""                # da completare
+      host: ""                # da completare
+      services:
+        - ""                  # da completare
+        - ""
 
-# PROCESSO: Check VM status (chiamate a script/RPA di monitoraggio)
 process_steps:
- - step_name: "check_vm_status"
-   action: "call_script"     # CHIAMA script ping/connectivity
-   script_path: "___________" # COMPLETA: path script monitoraggio
-   method: "___________"     # COMPLETA: metodo check_connectivity
-   for_each: "___________"    # COMPLETA: su cosa iteri?
-   checks:
-     - check_type: "___________"  # COMPLETA: che controlli fai?
-       expected: "___________"    # COMPLETA: risultato atteso
-     - check_type: "___________"
-       expected: "___________"
-  
- - step_name: "check_services"
-   action: "call_rpa_bot"    # CHIAMA bot RPA per check servizi
-   bot_name: "___________"   # COMPLETA: nome bot servizi
-   repository: "___________" # COMPLETA: repo con logica servizi
-   for_each: "___________"    # COMPLETA
-  
- - step_name: "generate_report"
-   action: "call_script"     # CHIAMA script generazione report
-   script_path: "___________" # COMPLETA: path script report
-   template: "___________"   # COMPLETA: template report
-   format: "___________"      # COMPLETA: formato report
-  
- - step_name: "send_report"
-   action: "call_api"        # CHIAMA API email/notification
-   api_endpoint: "___________" # COMPLETA: endpoint notifica
-   method: "___________"     # COMPLETA: POST per invio
-   recipients:
-     - "___________"          # COMPLETA: destinatari
-   conditions:
-     - if: "___________"      # COMPLETA: quando inviare?
-       then: "___________"    # COMPLETA: cosa fare?
+  - step_name: "check_vm_status"
+    action: "call_script"
+    script_path: ""           # da completare
+    method: ""                # da completare
+    for_each: ""              # da completare
+    checks:
+      - check_type: ""        # da completare
+        expected: ""          # da completare
+      - check_type: ""        # da completare
+        expected: ""          # da completare
 
-# OUTPUT: Risultati monitoraggio
+  - step_name: "check_services"
+    action: "call_rpa_bot"
+    bot_name: ""              # da completare
+    repository: ""            # da completare
+    for_each: ""              # da completare
+
+  - step_name: "generate_report"
+    action: "call_script"
+    script_path: ""           # da completare
+    template: ""              # da completare
+    format: ""                # da completare
+
+  - step_name: "send_report"
+    action: "call_api"
+    api_endpoint: ""          # da completare
+    method: ""                # da completare
+    recipients:
+      - ""                    # da completare
+    conditions:
+      - if: ""                # da completare
+        then: ""              # da completare
+      - if: ""                # da completare
+        then: ""              # da completare
+
 output_data:
- report_generated: true
- vm_status_summary:
-   total_vms: "___________"   # COMPLETA
-   online_vms: "___________"  # COMPLETA
-   offline_vms: "___________" # COMPLETA
-   issues_found: "___________" # COMPLETA
-```
-
+  report_generated: true
+  vm_status_summary:
+    total_vms: "__CALCOLATO_AUTOMATICAMENTE__"
+    online_vms: "__CALCOLATO_AUTOMATICAMENTE__"
+    offline_vms: "__CALCOLATO_AUTOMATICAMENTE__"
+    issues_found: "__CALCOLATO_AUTOMATICAMENTE__"
