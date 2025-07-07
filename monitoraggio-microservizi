@@ -1,0 +1,94 @@
+
+
+ESERCIZIO YAML – MONITORAGGIO SERALE MICROSERVIZI
+
+OBIETTIVO
+Definire un workflow YAML che controlli ogni sera lo stato dei microservizi critici, verifichi la salute delle dipendenze, e invii un report ai responsabili tecnici.
+
+SCENARIO
+Ogni giorno alle 19:00 il sistema deve:
+	1.	Verificare se i microservizi elencati sono attivi e rispondono correttamente
+	2.	Controllare se le dipendenze dichiarate (es. database, coda messaggi) sono disponibili
+	3.	Generare un report in formato JSON
+	4.	Inviare il report via API al canale notifiche se ci sono anomalie oppure se la generazione è andata a buon fine
+
+Dati noti
+	•	Servizi da monitorare
+	•	auth-service su 10.10.1.5, dipendenze: postgres, rabbitmq
+	•	billing-service su billing.internal.lan, dipendenze: mysql, redis
+	•	Script Python da usare: /opt/monitoring/check_microservices.py
+	•	Bot: DependencyCheck_Bot
+	•	Repository del bot: RPA_DependenciesRepo
+	•	API di notifica: https://notify.internal/api/report
+	•	Email dei responsabili: devops-team@internal.com
+
+Compila solo i campi richiesti nel file YAML seguente. Tutti gli altri campi sono autogenerati o già noti.
+
+⸻
+
+
+workflow_name: "microservices_evening_check"
+
+trigger:
+  type: "scheduled"
+  schedule: ""                # da completare
+
+service_config:
+  critical_services:
+    - name: ""                # da completare
+      host: ""                # da completare
+      dependencies:
+        - ""                  # da completare
+        - ""
+    - name: ""                # da completare
+      host: ""                # da completare
+      dependencies:
+        - ""                  # da completare
+        - ""
+
+process_steps:
+  - step_name: "check_service_health"
+    action: "call_script"
+    script_path: ""           # da completare
+    method: ""                # da completare
+    for_each: ""              # da completare
+    checks:
+      - check_type: ""        # da completare
+        expected: ""          # da completare
+      - check_type: ""        # da completare
+        expected: ""          # da completare
+
+  - step_name: "check_dependencies"
+    action: "call_rpa_bot"
+    bot_name: ""              # da completare
+    repository: ""            # da completare
+    for_each: ""              # da completare
+
+  - step_name: "generate_report"
+    action: "call_script"
+    script_path: ""           # da completare
+    template: ""              # da completare
+    format: ""                # da completare
+
+  - step_name: "send_report"
+    action: "call_api"
+    api_endpoint: ""          # da completare
+    method: ""                # da completare
+    recipients:
+      - ""                    # da completare
+    conditions:
+      - if: ""                # da completare
+        then: ""              # da completare
+      - if: ""                # da completare
+        then: ""              # da completare
+
+output_data:
+  report_generated: true
+  service_status_summary:
+    total_services: "__CALCOLATO_AUTOMATICAMENTE__"
+    healthy_services: "__CALCOLATO_AUTOMATICAMENTE__"
+    degraded_services: "__CALCOLATO_AUTOMATICAMENTE__"
+    failed_checks: "__CALCOLATO_AUTOMATICAMENTE__"
+
+
+
