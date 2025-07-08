@@ -1,80 +1,57 @@
-### OBIETTIVO
-Creare un workflow YAML per monitorare lo stato delle VM critiche e generare un report giornaliero.
-
-### SCENARIO
-Ogni mattina alle 8:00, il sistema deve eseguire un controllo su tutte le VM critiche indicate e verificarne:
-- la raggiungibilità
-- i servizi attivi
-
-Il controllo viene effettuato con uno script Python (già fornito), seguito da un bot RPA che verifica i servizi.  
-Infine, viene generato un report in formato PDF basato su un template HTML, che deve essere inviato via API agli amministratori all’indirizzo `sysadmin@company.com`.  
-Il report deve essere inviato **solo se viene generato o se ci sono problemi rilevati.
-
-Dati disponibili:
-- VM:
-  - `web-server-01`, IP `192.168.1.10`, servizi: `apache2`, `redis`
-  - `db-server-01`, host `db01.internal.lan`, servizi: `mysql`, `backupd`
-- Script di controllo: `/scripts/monitoring/vm_check.py`
-- Bot: `ServiceMonitoring_Bot`, repo: `RPA_ServiceCheck_Repo`
-- API endpoint: `https://api.company.com/notify`
-- Destinatario: `sysadmin@company.com`
-
----
-
 workflow_name: "vm_monitoring_daily"
 
 trigger:
   type: "scheduled"
-  schedule: ""                # da completare
+  schedule: "0 8 * * *"  # ogni giorno alle 08:00
 
 vm_config:
   critical_vms:
-    - name: ""                # da completare
-      host: ""                # da completare
+    - name: "web-server-01"
+      host: "192.168.1.10"
       services:
-        - ""                  # da completare
-        - ""
-    - name: ""                # da completare
-      host: ""                # da completare
+        - "apache2"
+        - "redis"
+    - name: "db-server-01"
+      host: "db01.internal.lan"
       services:
-        - ""                  # da completare
-        - ""
+        - "mysql"
+        - "backupd"
 
 process_steps:
   - step_name: "check_vm_status"
     action: "call_script"
-    script_path: ""           # da completare
-    method: ""                # da completare
-    for_each: ""              # da completare
+    script_path: "/scripts/monitoring/vm_check.py"
+    method: "check_connectivity"
+    for_each: "vm_config.critical_vms"
     checks:
-      - check_type: ""        # da completare
-        expected: ""          # da completare
-      - check_type: ""        # da completare
-        expected: ""          # da completare
+      - check_type: "ping"
+        expected: "reachable"
+      - check_type: "ssh_port"
+        expected: "open"
 
   - step_name: "check_services"
     action: "call_rpa_bot"
-    bot_name: ""              # da completare
-    repository: ""            # da completare
-    for_each: ""              # da completare
+    bot_name: "ServiceMonitoring_Bot"
+    repository: "RPA_ServiceCheck_Repo"
+    for_each: "vm_config.critical_vms"
 
   - step_name: "generate_report"
     action: "call_script"
-    script_path: ""           # da completare
-    template: ""              # da completare
-    format: ""                # da completare
+    script_path: "/scripts/monitoring/vm_check.py"
+    template: "vm_status_template.html"
+    format: "pdf"
 
   - step_name: "send_report"
     action: "call_api"
-    api_endpoint: ""          # da completare
-    method: ""                # da completare
+    api_endpoint: "https://api.company.com/notify"
+    method: "POST"
     recipients:
-      - ""                    # da completare
+      - "sysadmin@company.com"
     conditions:
-      - if: ""                # da completare
-        then: ""              # da completare
-      - if: ""                # da completare
-        then: ""              # da completare
+      - if: "output_data.issues_found > 0"
+        then: "send_notification"
+      - if: "output_data.report_generated == true"
+        then: "send_report"
 
 output_data:
   report_generated: true
@@ -83,3 +60,4 @@ output_data:
     online_vms: "__CALCOLATO_AUTOMATICAMENTE__"
     offline_vms: "__CALCOLATO_AUTOMATICAMENTE__"
     issues_found: "__CALCOLATO_AUTOMATICAMENTE__"
+
